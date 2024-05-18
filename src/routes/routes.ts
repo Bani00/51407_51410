@@ -1,20 +1,25 @@
-import { Router } from 'express'
-import { CurrencyController } from '../controller/currency.controller'
+import { CurrencyController } from '../controller/currency.controller';
+import { ValidationMiddleware } from '../middleware/middleware';
+import { validateCurrency } from '../repository/currency.repository';
+import { Router } from 'express';
 
 export class Routes {
-  private readonly currencyController: CurrencyController
+  constructor(
+    private readonly currencyController: CurrencyController,
+    private readonly validationController: ValidationMiddleware
+  ) {}
+  public registerRoutes(): Router {
+    const router = Router();
 
-  constructor() {
-    this.currencyController = new CurrencyController()
-  }
+    router.get('/currency', (req, res) => this.currencyController.getAllCurrencies(req, res));
+    router.get(
+      '/currency/:currency',
+      (req, res, next) => this.validationController.getMiddleware(validateCurrency)(req, res, next),
+      (req, res) => {
+        this.currencyController.getCurrencyChangeRate(req, res);
+      }
+    );
 
-  public registerCurrencyRoutes(): Router {
-    const router = Router()
-
-    router.get('/currency', (req, res) =>
-      this.currencyController.getAllCurrencies(req, res)
-    )
-
-    return router
+    return router;
   }
 }
