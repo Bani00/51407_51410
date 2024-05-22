@@ -1,6 +1,8 @@
-import { readFileSync } from 'fs';
-import { Config } from '../config/config';
 import { ValidationMiddlewareFunc } from '../middleware/middleware';
+import { Collection } from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export enum Currency {
   USD = 'USD',
@@ -10,57 +12,73 @@ export enum Currency {
   CHF = 'CHF',
 }
 
-export type Currencies = {
-  currencies: {
-    [outerKey in Currency]: Record<Currency, number>;
-  };
-};
-
 export type ExchangeRate = { currency: Currency; exchangeRate: number };
 export type ComparisonRate = { exchangeRate: number };
+export type CurrencyEntity = { name: string; rates: Record<string, number> };
+
+const isCurrency = (currency: unknown): currency is Currency => {
+  if (!currency) {
+    return false;
+  }
+
+  if (typeof currency !== 'string') {
+    return false;
+  }
+
+  if (!Object.values(Currency).includes(currency as Currency)) {
+    return false;
+  }
+
+  return true;
+};
 
 export const validateCurrency: ValidationMiddlewareFunc = ({ params }) => {
   const currency = params.currency;
 
-  if (!currency) {
-    throw new Error('Currency is required');
+  if (!isCurrency(currency)) {
+    throw new Error('Currency not found');
   }
+};
 
-  if (typeof currency !== 'string') {
-    throw new Error('Currency must be a string');
-  }
+export const validateCurrencyInQueryIfExists: ValidationMiddlewareFunc = ({ query }) => {
+  const currency = query.compare_to;
 
-  if (!Object.values(Currency).includes(currency as Currency)) {
+  if (currency && !isCurrency(currency)) {
     throw new Error('Currency not found');
   }
 };
 
 export class CurrencyRepository {
-  private readonly currencies: Currencies['currencies'];
+  constructor(private readonly collection: Collection<CurrencyEntity>) {}
 
-  constructor(private readonly config: Config) {
-    this.currencies = JSON.parse(readFileSync(this.config.getCurrenciesPath(), 'utf-8')).currencies;
-  }
-
-  public async getAllCurrencies(): Promise<Currency[]> {
-    return Object.values(Currency);
+  public async getAllCurrencies(): Promise<string[]> {
+    const currencies = await this.collection.find().toArray();
+    if (currencies.length === 0) {
+      throw new Error('Currencies not found');
+    }
+    return currencies.map((currency) => currency.name);
   }
 
   public async getCurrencyChangeRate(currency: Currency): Promise<ExchangeRate[]> {
-    const exchangeRates = this.currencies[currency];
-    if (!exchangeRates) {
+    const currencyEntity = await this.collection.findOne({ name: currency });
+    if (!currencyEntity) {
       throw new Error('Currency not found');
     }
 
-    return Object.entries(exchangeRates).map(([key, value]) => ({ currency: key as Currency, exchangeRate: value }));
+    return Object.entries(currencyEntity.rates).map(([currency, exchangeRate]) => ({ currency: currency as Currency, exchangeRate }));
   }
 
   public async getCurrencyComparison(currency: Currency, currencyToCompare: Currency): Promise<ComparisonRate> {
-    const allExchangeRates = this.currencies[currency];
-    const chosenCurrencyExchangeRate = allExchangeRates[currencyToCompare];
-    if (currency === currencyToCompare) {
-      return { exchangeRate: 1 };
+    const currencyEntity = await this.collection.findOne({ name: currency });
+    if (!currencyEntity) {
+      throw new Error('Currency not found');
     }
-    return { exchangeRate: chosenCurrencyExchangeRate };
+
+    const exchangeRate = currencyEntity.rates[currencyToCompare];
+    if (!exchangeRate) {
+      throw new Error('Currency not found');
+    }
+
+    return { exchangeRate };
   }
 }

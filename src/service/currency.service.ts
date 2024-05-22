@@ -8,7 +8,7 @@ export class CurrencyService {
     this.currencyRepository = currencyRepository;
   }
 
-  public async getAllCurrencies(): Promise<Currency[]> {
+  public async getAllCurrencies(): Promise<string[]> {
     return this.currencyRepository.getAllCurrencies();
   }
 
@@ -17,6 +17,10 @@ export class CurrencyService {
   }
 
   public async getCurrencyComparison(currency: Currency, currencyToCompare: Currency): Promise<ComparisonRate> {
+    if (currency === currencyToCompare) {
+      return { exchangeRate: 1 };
+    }
+
     return this.currencyRepository.getCurrencyComparison(currency, currencyToCompare);
   }
 }

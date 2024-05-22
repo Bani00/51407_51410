@@ -1,57 +1,45 @@
-import { instance, mock, when } from 'ts-mockito';
-import { Config } from '../../src/config/config';
-import { CurrencyRepository, Currency, ExchangeRate, ComparisonRate } from '../../src/repository/currency.repository';
-import { CurrencyService } from '../../src/service/currency.service';
-import { join } from 'path';
+import { GenericContainer, StartedTestContainer } from 'testcontainers';
+import { Collection } from 'mongodb';
+import { MongoDatabase } from '../../src/mongo-database';
+import { ComparisonRate, Currency, CurrencyEntity, CurrencyRepository, ExchangeRate } from '../../src/repository/currency.repository';
 
-describe('Currency Service Integration Test', () => {
-  let configMock: Config;
+describe('Currency Repository Integration Test', () => {
   const mainCurrency = Currency.USD;
   const currencyToCompare = Currency.CHF;
+  let mongoContainer: StartedTestContainer;
+  let mongoDatabase: MongoDatabase;
+  let collection: Collection<CurrencyEntity>;
 
-  beforeEach(() => {
-    configMock = mock(Config);
+  beforeAll(async () => {
+    mongoContainer = await new GenericContainer('mongo').withExposedPorts(27017).start();
+    const uri = `mongodb://localhost:${mongoContainer.getMappedPort(27017)}`;
+    mongoDatabase = await MongoDatabase.start(uri);
+    collection = mongoDatabase.getCollection('Currencies') as unknown as Collection<CurrencyEntity>;
   });
 
-  it('should return values from file', async () => {
+  it('should return values from db', async () => {
     // given
-    when(configMock.getCurrenciesPath()).thenReturn(join(__filename, '..', '__mocks__', 'valid-currencies.json'));
-    const currencyService = new CurrencyService(new CurrencyRepository(instance(configMock)));
+    const currencyNames = ['USD', 'PLN', 'EUR', 'GBP', 'CHF'];
+    const currencyRepository = new CurrencyRepository(collection);
 
     // when
-    const result = await currencyService.getAllCurrencies();
+    const result = await currencyRepository.getAllCurrencies();
 
     // expect Currency array using jest matchers
-    result.forEach((currency) => {
-      expect(Object.values(Currency).includes(currency)).toEqual(true);
-    });
-  });
-
-  it('should throw when invalid file is provided', async () => {
-    // given
-    when(configMock.getCurrenciesPath()).thenReturn(join(__filename, '..', '__mocks__', 'invalid-currencies.json'));
-    try {
-      new CurrencyService(new CurrencyRepository(instance(configMock)));
-    } catch (e: unknown) {
-      expect(e).toBeInstanceOf(Error);
-      expect((e as Error).name).toEqual('SyntaxError');
-    }
+    expect(result).toEqual(currencyNames);
   });
 
   it('should return exchange rate of given currency', async () => {
     // given
-    when(configMock.getCurrenciesPath()).thenReturn(join(__filename, '..', '__mocks__', 'valid-currencies.json'));
-    const currencyService = new CurrencyService(new CurrencyRepository(instance(configMock)));
-
     const exchangeRates: ExchangeRate[] = [
       { currency: Currency.PLN, exchangeRate: 3.77 },
       { currency: Currency.EUR, exchangeRate: 0.89 },
       { currency: Currency.GBP, exchangeRate: 0.79 },
       { currency: Currency.CHF, exchangeRate: 0.99 },
     ];
-
+    const currencyRepository = new CurrencyRepository(collection);
     // when
-    const result = await currencyService.getCurrencyChangeRate(mainCurrency);
+    const result = await currencyRepository.getCurrencyChangeRate(mainCurrency);
 
     // expect Currency array using jest matchers
     expect(result).toStrictEqual(exchangeRates);
@@ -59,15 +47,17 @@ describe('Currency Service Integration Test', () => {
 
   it('should return exchange rate of currency comparison', async () => {
     //given
-    when(configMock.getCurrenciesPath()).thenReturn(join(__filename, '..', '__mocks__', 'valid-currencies.json'));
-    const currencyService = new CurrencyService(new CurrencyRepository(instance(configMock)));
-
-    const exchangeRate: ComparisonRate = { exchangeRate: 0.99 };
-
+    const exchangeRate: ComparisonRate[] = [{ exchangeRate: 0.99 }];
+    const currencyRepository = new CurrencyRepository(collection);
     //when
-    const result = await currencyService.getCurrencyComparison(mainCurrency, currencyToCompare);
+    const result = await currencyRepository.getCurrencyComparison(mainCurrency, currencyToCompare);
 
     //then
-    expect(result).toStrictEqual(exchangeRate);
+    expect([result]).toStrictEqual(exchangeRate);
+  });
+
+  afterAll(async () => {
+    await mongoDatabase.stop();
+    await mongoContainer.stop();
   });
 });
