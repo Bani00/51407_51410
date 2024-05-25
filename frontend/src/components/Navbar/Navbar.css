@@ -1,0 +1,96 @@
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: linear-gradient(to right, rgb(59,59,59), rgb(84,84,84));
+    padding: 1rem;
+    color: white;
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-slogan {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gg-dollar {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    margin-left: 30px;
+    transform: scale(var(--ggs,3));
+    width: 2px;
+    height: 20px;
+    background: currentColor
+   }
+   
+   .gg-dollar::after,
+   .gg-dollar::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    border: 2px solid
+   }
+   
+   .gg-dollar::before {
+    border-right: 0;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    top: 3px;
+    left: -6px;
+    box-shadow: 4px -2px 0 -2px
+   }
+   
+   .gg-dollar::after {
+    border-left: 0;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    bottom: 3px;
+    right: -6px;
+    box-shadow: -4px 2px 0 -2px
+   } 
+
+   .logo-names {
+    margin-left: 30px;
+    font-family: "Exo 2", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: -18px;
+   }
+
+   .logo-title {
+    margin-left: 28px;
+    font-family: "Exo 2", sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+   }
+
+   .navbar-title {
+    font-size: 30px;
+    font-family: "Exo 2", sans-serif;
+  }
+  
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .navbar-links li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .navbar-links li a:hover {
+    color: #ddd;
+  }
