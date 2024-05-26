@@ -68,3 +68,17 @@
   background-color: #333;
   width: 200px;
 }
+
+.exchangeRates-comparison {
+  display: flex;
+  flex-direction: row;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.currency-ratio {
+  margin-top: 20px;
+  margin-left: 20px;
+}
