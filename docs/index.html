@@ -1,0 +1,56 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>51407_51410</title><meta name="description" content="Documentation for 51407_51410"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">51407_51410</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>51407_51410</h2></div><div class="tsd-panel tsd-typography"><a id="md:online-currency-exchange" class="tsd-anchor"></a><h1><a href="#md:online-currency-exchange">ONLINE CURRENCY EXCHANGE</a></h1><p><img src="image.png" alt="alt text"></p>
+<a id="md:description" class="tsd-anchor"></a><h2><a href="#md:description">Description</a></h2><p>This project is a web application created using Node.js, TypeScript and React. This is an online currency exchange office where the user can check the rates of individual currencies available in the database. (The rates are made up and do not reflect real values.)</p>
+<a id="md:technologies" class="tsd-anchor"></a><h2><a href="#md:technologies">Technologies</a></h2><ol>
+<li>Node.js[v18.12.1]: JavaScript runtime environment used for building server-side applications.</li>
+<li>TypeScript[5.2.2]: Programming language that adds static typing to JavaScript.</li>
+<li>React[18.3.1]: JavaScript library for building user interfaces.</li>
+</ol>
+<a id="md:requirements" class="tsd-anchor"></a><h2><a href="#md:requirements">Requirements</a></h2><ol>
+<li>Node.js</li>
+<li>NPM (Node Package Manager) or Yarn</li>
+</ol>
+<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><ol>
+<li>Clone the repository to your local machine.</li>
+<li>Navigate to the project&#39;s root directory.</li>
+<li>Open a terminal and run the following command to install all dependencies:<br />
+<code>npm install</code> <br />
+or <br />
+<code>yarn install</code></li>
+</ol>
+<a id="md:running" class="tsd-anchor"></a><h2><a href="#md:running">Running</a></h2><p>To run the application locally, follow these steps:</p>
+<ol>
+<li>Navigate to the project&#39;s root directory.</li>
+<li>In the terminal, run the command:<br />
+<code>npm run build</code><br />
+next<br />
+<code>npm run dev</code></li>
+</ol>
+<p>Now backend of the application should work on <a href="http://localhost:3333/api">http://localhost:3333/api</a>.</p>
+<ol start="3">
+<li>Open second terminal and run the command:<br />
+<code>cd frontend</code><br />
+next <br />
+<code>npm start</code></li>
+</ol>
+<p>Now after couple of seconds our web application should start on <a href="http://localhost:3000">http://localhost:3000</a> inside web browser and is ready to work.</p>
+<a id="md:testing" class="tsd-anchor"></a><h1><a href="#md:testing">Testing</a></h1><p>Test are made using Jest, Mockito and TestContainers. There are unit tests for every layer of our backend app, one integration test and one e2e test.
+To run all tests open terminal and run the command:
+<code>npm run test</code></p>
+<a id="md:endpoints" class="tsd-anchor"></a><h1><a href="#md:endpoints">Endpoints</a></h1><p>Routes:</p>
+<ol>
+<li><p><code>/api/currency</code>:
+Getting all available currencies from database as an array of strings with their names.<br /></p>
+<p>Example: [USD, PLN, CHF]</p>
+</li>
+<li><p><code>/api/currency/:nameOfCurrency</code>:<br />
+Getting all exchange rates for choosen currency.<br /></p>
+<p>Example: <code>/api/currency/USD</code>:<br />
+<code>{ &quot;exchangeRates&quot;: [{ &quot;currency&quot;: &quot;PLN&quot;, &quot;exchangeRate&quot;: 3.77 }]}</code></p>
+</li>
+<li><p><code>/api/currency/:nameOfCurrency?compare_to=&lt;nameOfCurrency&gt;</code>:<br />
+Getting ratio between 2 given currencies.<br /></p>
+<p>Example: <code>/api/currencies/GBP?compare_to=PLN</code>:<br />
+<code>{ &quot;exchangeRate&quot;: 3.77 }</code></p>
+</li>
+</ol>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:online-currency-exchange"><span>ONLINE CURRENCY EXCHANGE</span></a><ul><li><a href="#md:description"><span>Description</span></a></li><li><a href="#md:technologies"><span>Technologies</span></a></li><li><a href="#md:requirements"><span>Requirements</span></a></li><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:running"><span>Running</span></a></li></ul><a href="#md:testing"><span>Testing</span></a><a href="#md:endpoints"><span>Endpoints</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>51407_51410</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
