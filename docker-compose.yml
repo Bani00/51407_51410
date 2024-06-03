@@ -3,26 +3,33 @@ version: '3.9'
 services:
   # Mongodb service
   mongo_db:
-    container_name: db_container
     image: mongo:latest
     restart: always
     ports:
       - 27017:27017
     volumes:
       - mongo_data:/data/db
+    networks:
+      - app-network
 
   # Node api service
   api:
     build: .
     ports:
       # local->container
-      - 4000:3000
+      - 3333:3000
     environment:
       PORT: 3000
       MONGODB_URI: mongodb://mongo_db:27017
       DB_NAME: mongo_db
     depends_on:
       - mongo_db
+    networks:
+      - app-network
 
 volumes:
   mongo_data: {}
+
+networks:
+  app-network:
+    driver: bridge
