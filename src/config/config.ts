@@ -11,6 +11,6 @@ export class Config {
   }
 
   public getPort(): number {
-    return parseInt(process.env['PORT'] || '8080');
+    return parseInt(process.env['PORT'] || '3333');
   }
 }
